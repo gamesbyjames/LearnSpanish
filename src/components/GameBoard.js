@@ -28,6 +28,8 @@ const GameBoard = () => {
   const [selectedWords, setSelectedWords] = useState([]);
   const [shuffledWords, setShuffledWords] = useState([]);
   const [gameOver, setGameOver] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [intervalId, setIntervalId] = useState(null);
 
   useEffect(() => {
     if (currentCategory && phrasesByCategory[currentCategory]) {
@@ -37,15 +39,29 @@ const GameBoard = () => {
         setShuffledWords(shuffleArray(spanishWords));
         setSelectedWords([]);
       } else {
+        clearInterval(intervalId); // Stop the timer
         setGameOver(true);
       }
     }
-  }, [currentPhraseIndex, currentCategory]);
+  }, [currentPhraseIndex, currentCategory, intervalId]);
+
+  useEffect(() => {
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [intervalId]);
 
   const handleCategorySelect = (category) => {
     setCurrentCategory(category);
     setCurrentPhraseIndex(0);
     setGameOver(false);
+    setTimer(0); // Reset timer
+    const id = setInterval(() => {
+        setTimer(oldTimer => oldTimer + 1);
+    }, 1000); // Update timer every second
+  setIntervalId(id);
   };
 
   const handleSelectWord = (word) => {
@@ -74,6 +90,14 @@ const GameBoard = () => {
     setSelectedWords([]);
     setShuffledWords([]);
     setGameOver(false);
+    clearInterval(intervalId); // Stop the timer
+    setTimer(0); // Reset timer
+  };
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
   if (!currentCategory) {
@@ -85,21 +109,23 @@ const GameBoard = () => {
     );
   }
 
-  if (gameOver) {
+  /*if (gameOver) {
     return (
       <div>
         Category complete! Select a new category.
         <button onClick={handleRestart}>Back to Categories</button>
       </div>
     );
-  }
+  }*/
 
   // This check prevents the error when all phrases are completed
   if (gameOver) {
+    const timeTaken = formatTime(timer);
     return (
-      <div>
-        Category complete! Select a new category.
-        <button onClick={handleRestart}>Back to Categories</button>
+        <div>
+        <div>Category complete! Time taken: {timeTaken}.</div>
+        <div>Select a new category.</div>
+      <button onClick={handleRestart}>Back to Categories</button>
       </div>
     );
   }
@@ -112,7 +138,8 @@ const GameBoard = () => {
   const currentPhrase = phrasesByCategory[currentCategory][currentPhraseIndex];
   
   return (
-    <div>
+    <div className="game-container">
+        <div>Time: {formatTime(timer)}</div>
       {shuffledWords.map((word, index) => (
         <WordOval key={index} word={word} onSelectWord={handleSelectWord} />
       ))}
