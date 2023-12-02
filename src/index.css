@@ -1,13 +1,23 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* src/index.css */
+.word-oval {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 20px;
+  border-radius: 20px; /* Gives the oval shape */
+  background-color: #4CAF50; /* Example background color */
+  color: white; /* Example text color */
+  text-align: center;
+  cursor: pointer; /* Changes the cursor on hover */
+  /* Add any other styling you want for the ovals */
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.category-oval {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 20px;
+  border-radius: 20px; /* Gives the oval shape */
+  background-color: #4CAF50; /* Example background color */
+  color: white; /* Example text color */
+  text-align: center;
+  cursor: pointer;
 }
