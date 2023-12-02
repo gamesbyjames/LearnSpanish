@@ -2,6 +2,13 @@
 import React, { useEffect, useState } from 'react';
 
 const WordOval = ({ word, onSelectWord }) => {
+  const playSound = () => {
+    const audio = new Audio(`/sounds/${word}.wav`);
+    audio.play().catch(error => console.log("Audio playback failed", error));
+
+    onSelectWord(word);
+  };
+
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
   useEffect(() => {
@@ -16,13 +23,14 @@ const WordOval = ({ word, onSelectWord }) => {
 
   return (
     <div 
-  className="word-oval" 
-  style={{ top: position.top + 'px', left: position.left + 'px' }} 
-  onClick={() => onSelectWord(word)}
->
-  {word}
-</div>
+      className="word-oval" 
+      style={{ top: position.top + 'px', left: position.left + 'px' }} 
+      onClick={playSound}
+    >
+      {word}
+    </div>
   );
 };
 
 export default WordOval;
+
