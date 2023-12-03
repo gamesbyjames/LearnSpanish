@@ -45,6 +45,16 @@ const GameBoard = () => {
     }
   }, [currentPhraseIndex, currentCategory, intervalId]);
 
+  /*useEffect(() => {
+    if (currentCategory && phrasesByCategory[currentCategory]) {
+      const currentPhrase = phrasesByCategory[currentCategory][currentPhraseIndex];
+      if (currentPhrase) {
+        const audio = new Audio(`/sounds/phrases/${currentPhrase.key}.wav`);
+        audio.play().catch(e => console.error("Failed to play:", e));
+      }
+    }
+  }, [currentPhraseIndex, currentCategory]);*/
+
   useEffect(() => {
     return () => {
       if (intervalId) {
@@ -52,6 +62,35 @@ const GameBoard = () => {
       }
     };
   }, [intervalId]);
+
+  useEffect(() => {
+    if (currentCategory && phrasesByCategory[currentCategory]) {
+      const currentPhrase = phrasesByCategory[currentCategory][currentPhraseIndex];
+      if (currentPhrase) {
+        const audioFileName = generateKeyFromPhrase(currentPhrase.spanish);
+        console.log(audioFileName)
+        const audio = new Audio(`/sounds/phrases/${audioFileName}.wav`);
+        console.log(audio);
+        //audio.play().catch(e => console.error("Failed to play:", e));
+        // Set a timeout to delay the audio playback
+        const playTimeout = setTimeout(() => {
+            audio.play().catch(e => console.error("Failed to play:", e));
+        }, 500); // Delay of 500 milliseconds
+
+        // Clear the timeout if the component unmounts
+        return () => clearTimeout(playTimeout);
+      }
+    }
+  }, [currentPhraseIndex, currentCategory]);
+
+  const generateKeyFromPhrase = (phrase) => {
+    return phrase
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+      .toLowerCase()
+      .replace(/\s+/g, '_') // Replace spaces with underscores
+      .replace(/[^\w\s]/gi, ''); // Remove all non-word characters
+  };
+  
 
   const handleCategorySelect = (category) => {
     setCurrentCategory(category);

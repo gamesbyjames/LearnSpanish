@@ -7,7 +7,7 @@ const phrasesByCategory = {
       { english: "What's your name?", spanish: "cómo te llamas" },
       { english: "My name is Seana", spanish: "mi nombre es Seana" },
       { english: "Where do you live?", spanish: "donde vives" },
-      { english: "I live in Peru now but I am from Germany", spanish: "vivo en Peru ahora per soy de alemania" },
+      { english: "I live in Peru now but I am from Germany", spanish: "vivo en Peru ahora pero soy de alemania" },
       { english: "Do you have any brothes and sisters?", spanish: "tienes hermanos o hermanas" },
       { english: "Yes, I have one brother. His name is Patrick", spanish: "sí tengo un hermano su nombre es Patrick" },
       // ... add more small talk phrases
